@@ -4,13 +4,21 @@ require 'pry'
 
 def get_character_movies_from_api(character)
  #make the web request
- all_characters = RestClient.get("http://www.swapi.co/api/people")
+i=1
+category_array = []
+while i < 10
+ all_characters = RestClient.get("http://www.swapi.co/api/people/?page=#{i}")
  character_hash = JSON.parse(all_characters)
  films_hash = []
  link_hash = []
-   character_hash["results"].each do |category|
-     if category["name"] == character
-       link_hash << category["films"]
+   # character_hash["results"].each do |category|
+     category_array.concat(character_hash["results"])
+     # binding.pry
+   i += 1
+ end
+    category_array.each do |person|
+     if person["name"] == character
+       link_hash << person["films"]
      end
    end
          # binding.pry
